@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <script>
+
+            function start() {
+                document.getElementById("HomeS").click();
+            }
+
+            function openPage(pageName, elmnt, color) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i  &lt; tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i  &lt; tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "";
+                }
+
+                document.getElementById(pageName).style.display = "block";
+                elmnt.style.backgroundColor = color;
+            }
+        </script>
+
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial;
+            }
+            #Home {
+                background-color: red;
+                background-image: url("assets/home.jpg");
+                bacground-size: cover;
+            }
+            #SignUp {
+                background-color: green;
+                background-image: url("assets/signup.jpg");
+                background-repeat: no-repeat;
+                bacground-size: cover;
+                background-attachment: fixed;
+            }
+            #Guest {
+                background-color: blue;
+                background-image: url("assets/guest.png");
+                bacground-size: cover;
+            }	
+            .tablink {
+                background-color: #555;
+                color: white;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                font-size: 17px;
+                width: 33.33%;
+            }
+
+            .tablink:hover {
+                background-color: #777;
+            }
+
+            /* Style the tab content (and add height:100% for full page content) */
+            .tabcontent {
+                color: white;
+                display: none;
+                padding: 100px 20px;
+                height: 100%;
+            }
+
+            .customDialog {
+                background-image: url("assets/signup.jpg");
+                bacground-size: cover;
+            }
+        </style>
+
+        <h:outputStylesheet library="css" name="index.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/index.css"></link>
+
+
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width = device-width, initial-scale = 1"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"/>
+        <title>Login page</title>
+    </h:head>
+
+    <h:body onload="start()" >
+
+        <button class="tablink" onclick="openPage('Home', this, 'red')" id="HomeS">Home</button>
+        <button class="tablink" onclick="openPage('SignUp', this, 'green')" id="defaultOpen">Sign up</button>
+        <button class="tablink" onclick="openPage('Guest', this, 'blue')">Guest</button>
+
+
+
+
+        <div id="Home" class="tabcontent">
+            <div class="login-box" align="center">
+                <h:graphicImage value = "assets/avatar.png" class="avatar"/> 
+                <h:form >
+                    <h2>Login</h2>
+                    <h:panelGrid columns="2">
+
+                        <p>Username:</p>
+                        <h:inputText value="#{login.username}" id="username"/>
+
+                        <p> Password: </p>
+                        <h:inputSecret value="#{login.password}" id="password"  validatorMessage="Password length must be between 8 and 12 characters">
+                            <f:validateLength minimum="8" maximum="12" for="password"/>
+                        </h:inputSecret>
+
+                        <h:commandButton value="LOGIN" action="#{login.login}" class="btn btn-info">
+                            <f:ajax execute="username password" render="Error" />
+                        </h:commandButton>
+                    </h:panelGrid>
+                </h:form>
+                <h:form>
+                    <h:commandButton value="Forgot Password" onclick="PF('dlg2').show();" class="btn btn-info"> 
+                        <f:ajax render=""/>
+                    </h:commandButton>
+                </h:form>
+                <b>  <h:outputText id="Error" value="#{login.error}" style="color:red;"/>	</b>
+                <b>  <h:message id="m1" for="password" style="color:red"/></b>
+            </div>     
+        </div>
+
+        <p:dialog widgetVar="dlg2" modal="true" height="500" width="500" styleClass="customDialog">
+            <div align="center">
+                <h:form >
+                    <p style="color:white;">Username:</p>
+                    <p:inputText value="#{login.username}" required="true" requiredMessage="Username is required." id="dialogUser"/> 
+                    <p style="color:white;">New password:</p>
+                    <p:password id="nonFeedback1" value="#{login.updatedPass}" />	     	  
+                    <p style="color:white;">Confirm new password:</p>
+                    <p:password id="nonFeedbackRepeat" /> <br/> <br/>
+                    <h:commandButton value="CHANGE" action="#{login.updatePass}" class="btn btn-info">
+                        <f:ajax execute="nonFeedback1 dialogUser" render="ErrorDialog" />
+                    </h:commandButton>
+                </h:form>   
+                <br/>
+                <b>  <h:outputText id="ErrorDialog" value="#{login.error}" style="color:white;"/>	</b> 	
+            </div>	     	  
+        </p:dialog>  
+
+        <div id="SignUp" class="tabcontent">
+            <h:graphicImage value = "assets/avatar.png" class="avatar2"/> 
+            <div class="signup-box" align="center" id="scrollable_div">
+                 <h:form>
+                    <h:panelGrid columns="2" cellpadding = "20">
+                        <f:facet name="header">
+                            <p:messages id="msgs" />
+                        </f:facet>
+
+                        <p>Username:</p>
+                        <p:inputText value="#{controlerIn.userUsername}" required="true" requiredMessage="Username is required." id="us1"/>     
+                        <p>Name:</p>
+                        <p:inputText value="#{controlerIn.userName}" required="true" requiredMessage="Name is required." id="nm1" />
+                        <p>Surname:</p>
+                        <p:inputText value="#{controlerIn.userSurname}" required="true" requiredMessage="Surname is required." id="su1"/> 
+
+                        <p>Date of birth:</p>
+                        <p:calendar id="button" value="#{controlerIn.userDate}" showOn="button" required="true" requiredMessage="Date of birth is required." />     
+
+
+                        <p>E-mail:</p>
+                        <p:inputText value="#{controlerIn.userEmail}" required="true" requiredMessage="Email is required." id="em1"/>
+                        <p>Institution:</p>
+                        <p:inputText value="#{controlerIn.userInstitution}" id="in1"/> 
+
+                        <p>Gender:</p>
+                        <p:selectOneMenu id="console" value="#{controlerIn.userGender}" style="width:230px">
+                            <f:selectItem itemLabel="Man" itemValue="Man" />
+                            <f:selectItem itemLabel="Women" itemValue="Women" />
+                        </p:selectOneMenu>    
+
+                        <p>Password:</p>
+                        <p:password id="nonFeedback" value="#{controlerIn.userPass}" required="true" requiredMessage="Password is required." 
+                                    validatorMessage="Password length must be between 8 and 12 characters">
+                            <f:validateLength minimum="8" maximum="12" for="nonFeedback"/>
+                        </p:password>
+
+                        <p>Confirm password:</p>
+                        <p:password id="nonFeedbackRepeat" />    
+
+                        <p>LinkedIn link:</p>
+                        <p:inputText value="#{controlerIn.userLinkedIn}" id="ln1"/>      
+
+                        <p>Image:</p>	 
+                        <p:fileUpload id="im1" value="#{controlerIn.image}" mode="simple" />            
+                    </h:panelGrid>
+
+                    <h:commandButton value="CREATE ACCOUNT" action="#{controlerIn.createAccount()}" class="btn btn-info">
+                        <f:ajax  execute="us1 nm1 su1 em1 in1 console nonFeedback ln1 button im1" render="msgs"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+        </div>
+
+        <div id="Guest" class="tabcontent">
+            <div class="login-box" align="center">
+                <h2>If you want to login as a guest click the button below</h2>
+                <h:graphicImage value = "assets/avatar.png" class="avatar"/> 
+                <h:form>
+                    <h:commandButton value="LOGIN AS A GUEST" action="#{login.logInAsGuest()}" class="btn btn-info">
+                        <f:ajax render="msgs"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+        </div>
+
+
+    </h:body>
+</html>

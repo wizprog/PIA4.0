@@ -1,0 +1,163 @@
+body, html {
+	  height: 100%;
+	  margin: 0;
+	  font-family: Arial;
+	}
+	
+	/* Style tab links */
+	.tablink {
+	  background-color: #555;
+	  color: white;
+	  float: left;
+	  border: none;
+	  outline: none;
+	  cursor: pointer;
+	  padding: 14px 16px;
+	  font-size: 17px;
+	  width: 33.33%;
+	}
+	
+	.tablink:hover {
+	  background-color: #777;
+	}
+	
+	/* Style the tab content (and add height:100% for full page content) */
+	.tabcontent {
+	  color: white;
+	  display: none;
+	  padding: 100px 20px;
+	  height: 100%;
+	}
+	.login{
+		border-style:solid;
+		border-color:white;
+		margin: auto;
+        width: 30%;
+        height: 30%;
+	} 
+	#Home {
+		background-color: red;
+		background-image: url("../../assets/home.jpg");
+		bacground-size: cover;
+	}
+	#SignUp {
+		background-color: green;
+		background-image: url("../../assets/signup.jpg");
+		background-repeat: no-repeat;
+  	    background-attachment: fixed;
+	}
+	#Guest {
+		background-color: blue;
+		background-image: url("../../assets/guest.png");
+		bacground-size: cover;
+ 	}	
+ 	
+	 	.login-box{
+	    width: 420px;
+	    height: 480px;
+	    background: rgba(0, 0, 0, 0.5);
+	    color: #fff;
+	    top: 50%;
+	    left: 50%;
+	    position: absolute;
+	    transform: translate(-50%,-50%);
+	    box-sizing: border-box;
+	    padding: 70px 30px;
+	}
+	.avatar{
+	    width: 100px;
+	    height: 100px;
+	    border-radius: 50%;
+	    position: absolute;
+	    top: -50px;
+	    left: calc(50% - 50px);
+	}
+	h1{
+	    margin: 0;
+	    padding: 0 0 20px;
+	    text-align: center;
+	    font-size: 22px;
+	}
+	.login-box p{
+	    margin: 0;
+	    padding: 0;
+	    font-weight: bold;
+	}
+	.login-box input{
+	    width: 100%;
+	    margin-bottom: 20px;
+	}
+	.login-box input[type="text"], input[type="password"]
+	{
+	    border: none;
+	    border-bottom: 1px solid #fff;
+	    background: transparent;
+	    outline: none;
+	    height: 40px;
+	    color: #fff;
+	    font-size: 16px;
+	}
+	#login-button  input[type="submit"]
+	{
+	    border: none;
+	    outline: none;
+	    height: 40px;
+	    background: #1c8adb;
+	    color: #fff;
+	    font-size: 18px;
+	    border-radius: 20px;
+	}
+	.login-box input[type="submit"]:hover
+	{
+	    cursor: pointer;
+	    background: #39dc79;
+	    color: #000;
+	}
+	
+	.login-box a{
+	    text-decoration: none;
+	    font-size: 14px;
+	    color: #fff;
+	}
+	.login-box a:hover
+	{
+	    color: #39dc79;
+	}
+	
+	
+	.signup-box{
+	    width: 960px;
+	    height: 900px;
+	    background: rgba(0, 0, 0, 0.5);
+	    color: #fff;
+	    top: 50%;
+	    left: 50%;
+	    position: absolute;
+	    transform: translate(-50%,-50%);
+	    box-sizing: border-box;
+	    padding: 70px 30px;
+	    overflow: hidden;
+	}
+	
+	.avatar2{
+	    width: 100px;
+	    height: 100px;
+	    border-radius: 50%;
+	    position: absolute;
+	    top: 80px;
+	    left: calc(50% - 50px);
+	}
+	
+	.albums
+	{
+	    border-collapse:separate;
+	    border-spacing:0 5px;
+	}
+	
+	 #scrollable_div{
+            overflow-y: scroll;
+            top: 55%;
+            width: 600px;
+            height: 700px;
+            border: solid thin black;
+        }

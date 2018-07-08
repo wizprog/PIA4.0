@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Dosie</title>
+        <style>
+            body, html {
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                height: 100%;
+                margin: 0;
+                font-family: Arial;
+                background-image: url("assets/login.jpg");
+                bacground-size: cover;
+            }
+
+            .divcontent {
+                border-width:5px;  
+                border-style:dashed;
+                border-color:white;
+                width: 30%;
+                height: 70%;
+                margin-left: 35%;
+            }
+
+        </style>
+    </h:head>
+    <h:body onload="#{dosie.onLoad()}">
+        <br/> <br/>
+        <div id="CompanyStats" class="divcontent" align="center">
+            <br/> <br/>
+            <p:panelGrid columns="2">
+                
+                <f:facet name="header">
+                    <p:graphicImage url="#{dosie.companyLogo}" />
+                </f:facet>
+
+                <h:outputText value="Name:" />
+                <h:outputText value="#{dosie.name}" />
+
+                <h:outputText value="Address:" />
+                <h:outputText value="#{dosie.address}" />
+
+                <h:outputText value="Bank account:" />
+                <h:outputText value="#{dosie.bankAccount}" />
+
+                <h:outputText value="PIB:" />
+                <h:outputText value="#{dosie.PIB}" />
+
+                <h:outputText value="Contact person:" />
+                <h:outputText value="#{dosie.contactPerson}" />
+
+                <h:outputText value="Contact phone:" />
+                <h:outputText value="#{dosie.contactPhone}" />
+
+                <h:outputText value="Contact email:" />
+                <h:outputText value="#{dosie.contactEmail}" />
+            </p:panelGrid>
+            <br/> <br/>
+            <a href="javascript:history.back()" style="font-size:20px;cursor:pointer;color:white">Go Back</a>
+        </div>
+    </h:body>
+</html>
+

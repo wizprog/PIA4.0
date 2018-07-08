@@ -1,0 +1,169 @@
+  body, html {
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                height: 100%;
+                margin: 0;
+                font-family: Arial;
+                background-image: url("assets/login.jpg");
+                bacground-size: cover;
+            }
+
+            #logout input[type="submit"]{
+                border: none;
+                outline: none;
+                height: 40px;
+                background: #1c8adb;
+                color: #fff;
+                font-size: 18px; 
+                border-radius: 20px;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #logout input[type="submit"]:hover{
+                cursor: pointer;
+                background: #39dc79;
+                color: #000;
+            }
+
+            .sidenav {
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #111;
+                overflow-x: hidden;
+                transition: 0.5s;
+                padding-top: 60px;
+            }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .sidenav input[type="submit"]{
+                font-family: "Lato", sans-serif;
+                font-size: 25px!important;
+                background:none!important;
+                color:white;
+                border:none; 
+                padding:8px 8px 8px 32px!important;
+                font: inherit;
+                transition: 0.3s;
+                cursor: pointer;
+                display: block;
+            }
+
+            .sidenav input[type="submit"]:hover {
+                color: #f1f1f1!important;
+            }
+
+            .sidenav button{
+                font-family: "Lato", sans-serif;
+                font-size: 25px!important;
+                background:none!important;
+                color:white;
+                border:none; 
+                padding:8px 8px 8px 32px!important;
+                font: inherit;
+                transition: 0.3s;
+                cursor: pointer;
+                display: block;
+
+            }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+            .sidenav p {
+                font-family: "Lato", sans-serif;
+                font-size: 25px!important;
+                background:none!important;
+                color:white;
+                padding:8px 8px 8px 32px!important;
+                font: inherit;
+                transition: 0.3s;
+                display: block;
+            }
+
+
+
+            #main {
+                transition: margin-left .5s;
+                padding: 16px;
+            }
+
+            @media screen and (max-height: 450px) {
+                .sidenav {padding-top: 15px;}
+                .sidenav a {font-size: 18px;}
+            }
+
+            .tabcontent {
+                border-width:5px;  
+                border-style:dashed;
+                border-color:white;
+                display: none;
+                padding: 100px 20px;
+                width: 50%;
+                height: 100%;
+                margin-left: 25%;
+            }
+
+            .tabcontent input[type="text"], input[type="password"]
+            {
+                border: none;
+                border-bottom: 1px solid #fff;
+                background: transparent;
+                outline: none;
+                height: 40px;
+                color: #fff;
+                font-size: 16px;
+            }
+
+            .tabcontent input[type="submit"]
+            {
+                border: none;
+                outline: none;
+                height: 40px;
+                background: #1c8adb;
+                color: #fff;
+                font-size: 18px;
+                border-radius: 10px;
+            }
+            .tabcontent  input[type="submit"]:hover
+            {
+                cursor: pointer;
+                background: #39dc79;
+                color: #000;
+            }
+
+            #companytable {
+                width: 50%;
+                border-collapse: collapse; /* so we can control cellspacing in a practical way */
+            }
+
+            #companytable th,
+            #companytable td {
+                padding: 5px;
+                text-align: center;
+                font-family: Arial, Verdana, sans-serif;
+            }
+
+            .recordLabel {
+                font-weight:bold;
+                color:blue;
+                font-family: Arial, Verdana, sans-serif;
+            }

@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:head>
+        <script>
+
+            function start() {
+            document.getElementById("defaultOpen").click();
+            }
+
+            function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+            }
+
+            function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.body.style.backgroundColor = "white";
+            }
+
+            function openPage(pageName, elmnt) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i &lt; tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            document.getElementById(pageName).style.display = "block";
+            }
+        </script>
+
+        <style>
+
+            body, html {
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                height: 100%;
+                margin: 0;
+                font-family: Arial;
+                background-image: url("assets/login.jpg");
+                bacground-size: cover;
+            }
+
+            #logout input[type="submit"]{
+                border: none;
+                outline: none;
+                height: 40px;
+                background: #1c8adb;
+                color: #fff;
+                font-size: 18px; 
+                border-radius: 20px;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #logout input[type="submit"]:hover{
+                cursor: pointer;
+                background: #39dc79;
+                color: #000;
+            }
+
+            .sidenav {
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #111;
+                overflow-x: hidden;
+                transition: 0.5s;
+                padding-top: 60px;
+            }
+
+            .sidenav a {
+                white-space: nowrap;
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .sidenav input[type="submit"]{
+                white-space: nowrap;
+                font-family: "Lato", sans-serif;
+                font-size: 25px!important;
+                background:none!important;
+                color:white;
+                border:none; 
+                padding:8px 8px 8px 32px!important;
+                font: inherit;
+                transition: 0.3s;
+                cursor: pointer;
+                display: block;
+            }
+
+            .sidenav input[type="submit"]:hover {
+                color: #f1f1f1!important;
+            }
+
+            .sidenav button{
+                white-space: nowrap;
+                font-family: "Lato", sans-serif;
+                font-size: 25px!important;
+                background:none!important;
+                color:white;
+                border:none; 
+                padding:8px 8px 8px 32px!important;
+                font: inherit;
+                transition: 0.3s;
+                cursor: pointer;
+                display: block;
+
+            }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+            .sidenav p {
+                font-family: "Lato", sans-serif;
+                font-size: 25px!important;
+                background:none!important;
+                color:white;
+                padding:8px 8px 8px 32px!important;
+                font: inherit;
+                transition: 0.3s;
+                display: block;
+            }
+
+            #main {
+                transition: margin-left .5s;
+                padding: 16px;
+            }
+
+            @media screen and (max-height: 450px) {
+                .sidenav {padding-top: 15px;}
+                .sidenav a {font-size: 18px;}
+            }
+
+            .tabcontent {
+                border-width:5px;  
+                border-style:dashed;
+                border-color:white;
+                display: none;
+                padding: 100px 20px;
+                width: 50%;
+                height: 100%;
+                margin-left: 25%;
+            }
+
+            .tabcontent input[type="text"], input[type="password"]
+            {
+                border: none;
+                border-bottom: 1px solid #fff;
+                background: transparent;
+                outline: none;
+                height: 40px;
+                color: #fff;
+                font-size: 16px;
+            }
+
+            .tabcontent input[type="submit"]
+            {
+                border: none;
+                outline: none;
+                height: 40px;
+                background: #1c8adb;
+                color: #fff;
+                font-size: 18px;
+                border-radius: 10px;
+            }
+            .tabcontent  input[type="submit"]:hover
+            {
+                cursor: pointer;
+                background: #39dc79;
+                color: #000;
+            }
+
+            #companytable {
+                width: 50%;
+                border-collapse: collapse; /* so we can control cellspacing in a practical way */
+            }
+
+            #companytable th,
+            #companytable td {
+                padding: 5px;
+                text-align: center;
+                font-family: Arial, Verdana, sans-serif;
+            }
+
+            .recordLabel {
+                font-weight:bold;
+                color:blue;
+                font-family: Arial, Verdana, sans-serif;
+            }
+        </style>
+
+
+    </h:head>
+
+    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();chartView.init();itDash.onLoadTable1();itDash.onLoadTable2()} start()">
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <p>Welcome,IT</p>
+            <button class="tablink" onclick="openPage('Dashboard', this); closeNav();" id="defaultOpen">Dashboard</button>
+            <button class="tablink" onclick="openPage('NewCompany', this); closeNav();">New company</button>
+            <button class="tablink" onclick="openPage('Partners', this); closeNav();" >Partners</button>
+            <button class="tablink" onclick="openPage('NewAdd', this); closeNav();">New add</button>
+            <button class="tablink" onclick="openPage('NewLecture', this); closeNav();">New lecture</button>
+            <h:form>
+                <h:commandButton value="Log out" action="#{login.logout}"/>
+            </h:form> 
+        </div>
+
+        <div id="main"> <span style="font-size:30px;cursor:pointer;color:white" onclick="openNav()">☰ Menu</span> </div>
+
+        <div id="Dashboard" class="tabcontent" align="center">
+
+            <h:form>
+                <h:commandButton value="Companies with expiring packages" onclick="PF('dlgx').show();" class="btn btn-info"> 
+                    <f:ajax render=""/>
+                </h:commandButton>
+            </h:form>
+
+            <p:dialog widgetVar="dlgx" modal="true" height="450" width="100%" styleClass="customDialog">
+                <p:chart type="line" model="#{chartView.lineModel1}" style="height:400px;"/>
+            </p:dialog> 
+            
+            <br/><br/>
+            <h:outputText value="Next 6 months" style="font-size:20px;cursor:pointer;color:white"/>
+            <p:dataTable value="#{itDash.list1}" var="company1" rows="20" selectionMode="single" selection="#{itDash.selectedCompany1}" rowKey="#{company1.PIB}">
+                <p:ajax event="rowSelect" listener="#{itDash.onRowSelect1}"  />
+                <p:column headerText="Company name">
+                    <h:outputText value="#{company1.name}" />
+                </p:column>
+            </p:dataTable>
+            
+            <br/> <br/>       
+            <h:outputText value="Previous 6 months" style="font-size:20px;cursor:pointer;color:white"/>
+            <p:dataTable value="#{itDash.list2}" var="company1" rows="20" selectionMode="single" selection="#{itDash.selectedCompany2}" rowKey="#{company2.PIB}">
+                 <p:ajax event="rowSelect" listener="#{itDash.onRowSelect2()}"/>
+                <p:column headerText="Company name">
+                    <h:outputText value="#{company1.name}" />
+                </p:column>
+            </p:dataTable>
+            
+        </div>
+
+        <div id="NewCompany" class="tabcontent" align="center">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding = "20">
+                    <f:facet name="header">
+                        <p:messages id="msgs" />
+                    </f:facet>
+
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Name:</p>
+                    <p:inputText value="#{createCompany.name}" required="true" requiredMessage="Name is required." id="c1" style="margin-right: 250px!important"/>     
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Address:</p>
+                    <p:inputText value="#{createCompany.address}" required="true" requiredMessage="Address is required." id="c2" style="margin-right: 250px!important" />
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Bank Account:</p>
+                    <p:inputText value="#{createCompany.bankAccount}" required="true" requiredMessage="Bank Account is required." id="c3" style="margin-right: 250px!important"/>       		     
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">PIB:</p>
+                    <p:inputText value="#{createCompany.PIB}" required="true" requiredMessage="PIB is required." id="c4" style="margin-right: 250px!important"/>
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Contact person:</p>
+                    <p:inputText value="#{createCompany.contactPerson}" id="c5" style="margin-right: 250px!important"/> 
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Contact phone:</p>
+                    <p:inputText value="#{createCompany.contactPhone}" id="c6" style="margin-right: 250px!important"/> 
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Contact email:</p>
+                    <p:inputText value="#{createCompany.contactEmail}" id="c7" style="margin-right: 250px!important"/> 
+                    <p style="color:white;font-size: 15px!important;margin-left:250px!important">Company logo:</p>
+                    <p:inputText value="#{createCompany.companyLogo}" id="c8" style="margin-right: 250px!important"/> 
+
+                </h:panelGrid>
+
+                <h:commandButton action="#{createCompany.create()}" value="Create company">
+                    <f:ajax  execute="c1 c2 c3 c4 c5 c6 c7 c8" render="msgs text3"/>
+                </h:commandButton>
+
+                <br/> <br/>
+                <h:outputText value="#{createCompany.textCompany}" style="color:red;font-size: 30px!important" id="text3"/> 
+
+            </h:form>
+            <br/>
+        </div>
+
+        <div id="Partners" class="tabcontent" align="center">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding = "5">
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Company:</p>
+                    <p:inputText value="#{partnerSearch.companyName}"  style="margin-right: 250px!important" id="c1"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Package:</p>
+                    <p:inputText value="#{partnerSearch.packageName}"  style="margin-right: 250px!important" id="c2"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Valid contract:</p>
+                    <p:selectBooleanCheckbox value="#{partnerSearch.actual}" id="c3"/>
+                </h:panelGrid> 
+
+                <h:commandButton value="Search partners" action="#{login.logout}">
+                    <f:ajax execute="c1 c2 c3" render=""/>
+                </h:commandButton>
+            </h:form>
+
+            <br/><br/>
+
+            <p:dataTable value="#{partnerSearch.companyList}" var="company" paginator="true" rows="20" lazy="false">
+                <p:column headerText="Company name">
+                    <h:outputText value="#{company.name}" />
+                </p:column>
+            </p:dataTable>
+
+
+        </div>
+
+        <div id="NewAdd" class="tabcontent" align="center">
+
+            <h:form>
+
+                <h:panelGrid columns="2" cellpadding = "20">
+
+                    <f:facet name="header">
+                        <p:messages id="msgs2" />
+                    </f:facet>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Company:</p>
+                    <p:selectOneMenu value="#{createAddLect.addCompany}" id="a1">
+                        <f:selectItems value="#{createAddLect.addUserCompanies}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Name:</p>
+                    <p:inputText value="#{createAddLect.addName}" required="true" requiredMessage="Name is required." style="margin-right: 250px!important" id="a5"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Description:</p>
+                    <p:inputText value="#{createAddLect.addDescription}" required="true" requiredMessage="Description is required." style="margin-right: 250px!important" id="a2"/> 
+
+                    <p:selectManyCheckbox value="#{createAddLect.addPracEmp}" id="a3" style="color:white;font-size: 20px!important;margin-left:250px!important">
+                        <f:selectItem itemLabel="Practice" itemValue="practice" />
+                        <f:selectItem itemLabel="Employment" itemValue="employment" />
+                    </p:selectManyCheckbox>                   
+
+                </h:panelGrid>
+
+                <h:commandButton action="#{createAddLect.createAdd()}" value="Create add" id="a4">
+                    <f:ajax  execute="a1 a2 a3 a4 a5" render="msgs2 text1"/>
+                </h:commandButton>
+
+                <br/> <br/>
+                <h:outputText value="#{createAddLect.addText}" style="color:red;font-size: 30px!important" id="text1"/> 
+
+            </h:form>
+        </div>
+
+        <div id="NewLecture" class="tabcontent" align="center">
+            <h:form>
+
+                <h:panelGrid columns="2" cellpadding = "20">
+
+                    <f:facet name="header">
+                        <p:messages id="msgs3" />
+                    </f:facet>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Company:</p>
+                    <p:selectOneMenu value="#{createAddLect.addCompany}" id="b1">
+                        <f:selectItems value="#{createAddLect.addUserCompanies}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Name:</p>
+                    <p:inputText value="#{createAddLect.lecName}" required="true" requiredMessage="Name is required." style="margin-right: 250px!important" id="b2"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Date:</p>
+                    <p:calendar id="b3" value="#{createAddLect.lecDate}" showOn="button" required="true" requiredMessage="Date is required." />     
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Time:</p>
+                    <p:calendar id="b4" value="#{createAddLect.lecTime}" pattern="HH:mm" timeOnly="true"  />
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Auditorium:</p>
+                    <p:inputText value="#{createAddLect.lecAuditorium}" required="true" requiredMessage="Auditorium is required." style="margin-right: 250px!important" id="b5"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Lecturer:</p>
+                    <p:inputText value="#{createAddLect.lecLecturer}" required="true" requiredMessage="Lecturer is required." style="margin-right: 250px!important" id="b6"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Biography</p>
+                    <p:inputText value="#{createAddLect.lecBiography}" style="margin-right: 250px!important" id="b7"/> 
+
+                </h:panelGrid>
+
+                <h:commandButton action="#{createAddLect.createLec()}" value="Create lecture" id="b8">
+                    <f:ajax  execute="b1 b2 b3 b4 b5 b6 b7" render="msgs3 text2"/>
+                </h:commandButton>
+
+                <br/> <br/>
+                <h:outputText value="#{createAddLect.lecText}" style="color:red;font-size: 30px!important" id="text2"/> 
+
+            </h:form>
+        </div>
+
+
+    </h:body>
+
+
+</html>
