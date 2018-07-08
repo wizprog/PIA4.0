@@ -54,5 +54,6 @@ Contributor(s):
     <mapping class="beans.Waiting"/>
     <mapping class="beans.MoneyContract"/>
     <mapping class="beans.DonationContract"/>
+    <mapping class="beans.Status"/>
   </session-factory>
 </hibernate-configuration>

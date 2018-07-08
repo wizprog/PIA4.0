@@ -9,6 +9,7 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:head>
+        <title>Admin</title>
         <script>
 
             function start() {
@@ -215,7 +216,7 @@
 
     </h:head>
 
-    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();aprove.onLoad()} start()">
+    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();aprove.onLoad();contractCreator.onLoad()} start()">
 
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
@@ -227,6 +228,9 @@
             <button class="tablink" onclick="openPage('NewLecture', this); closeNav();">New lecture</button>
             <button class="tablink" onclick="openPage('CreateUser', this); closeNav();">New user</button>
             <button class="tablink" onclick="openPage('CreatePackage', this); closeNav();">New package</button>
+            <button class="tablink" onclick="openPage('NewMoneyContract', this); closeNav();">Money contract</button>
+            <button class="tablink" onclick="openPage('NewDonationContract', this); closeNav();">Donation contract</button>
+
             <h:form>
                 <h:commandButton value="Log out" action="#{login.logout}"/>
             </h:form> 
@@ -410,15 +414,105 @@
 
             </h:form>
         </div>
-        
+
         <div id="CreateUser" class="tabcontent" align="center">
-            
-        </div>
-        
-        <div id="CreatePackage" class="tabcontent" align="center">
-            
+
         </div>
 
+        <div id="CreatePackage" class="tabcontent" align="center">
+
+        </div>
+
+        <div id="NewMoneyContract" class="tabcontent" align="center">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding = "10">
+
+                    <f:facet name="header">
+                        <p:messages id="msgs2" />
+                    </f:facet>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Company: </p>
+                    <p:selectOneMenu value="#{contractCreator.selectedCompany}" id="x1">
+                        <f:selectItems value="#{contractCreator.listOfCompanies}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Status:</p>
+                    <p:selectOneMenu value="#{contractCreator.selectedStatus}" id="x2">
+                        <f:selectItems value="#{contractCreator.listStatus}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Package:</p>
+                    <p:selectOneMenu value="#{contractCreator.selectedPackage}" id="x3">
+                        <f:selectItems value="#{contractCreator.listPackage}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Date:</p>
+                    <p:calendar id="x4" value="#{contractCreator.moneyDate}" showOn="button" required="true" requiredMessage="Date is required." />   
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Bill:</p>
+                    <p:selectBooleanCheckbox value="#{contractCreator.moneyBill}" id="x5" />
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Payment:</p>
+                    <p:selectBooleanCheckbox value="#{contractCreator.moneyPayment}" id="x6" />
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Date of payment:</p>
+                    <p:calendar id="x7" value="#{contractCreator.dateOfPayment}" showOn="button" required="true" requiredMessage="Date of payment is required." />   
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Comment:</p>
+                    <p:inputText value="#{contractCreator.moneyComment}"  style="margin-right: 250px!important" id="x8"/> 
+
+
+                </h:panelGrid>
+                <h:commandButton action="#{contractCreator.createMoneyContract()}" value="Create contract" id="x">
+                    <f:ajax  execute="x1 x2 x3 x4 x5 x6 x7 x8" render="msgs3 text3"/>
+                </h:commandButton>
+            </h:form>
+        </div>
+
+        <div id="NewDonationContract" class="tabcontent" align="center">
+            <h:form>
+
+                <h:panelGrid columns="2" cellpadding = "10">
+
+                    <f:facet name="header">
+                        <p:messages id="msgs4" />
+                    </f:facet>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Company:</p>
+                    <p:selectOneMenu value="#{contractCreator.selectedCompany}" id="y1">
+                        <f:selectItems value="#{contractCreator.listOfCompanies}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Status:</p>
+                    <p:selectOneMenu value="#{contractCreator.selectedStatus}" id="y2">
+                        <f:selectItems value="#{contractCreator.listStatus}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Package:</p>
+                    <p:selectOneMenu value="#{contractCreator.selectedPackage}" id="y3">
+                        <f:selectItems value="#{contractCreator.listPackage}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Date:</p>
+                    <p:calendar id="y4" value="#{contractCreator.donationDate}" showOn="button" required="true" requiredMessage="Date is required." />     
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Description:</p>
+                    <p:inputText value="#{contractCreator.donationDesription}"  style="margin-right: 250px!important" id="y5"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Shipment Date:</p>
+                    <p:calendar id="y6" value="#{contractCreator.donationShipmentDate}" showOn="button" required="true" requiredMessage="Shipment date is required." />     
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Comment:</p>
+                    <p:inputText value="#{contractCreator.donationComment}"  style="margin-right: 250px!important" id="y7"/> 
+
+
+                </h:panelGrid>
+
+                <h:commandButton action="#{createAddLect.createDonationContract()}" value="Create contract" id="y">
+                    <f:ajax  execute="y1 y2 y3 y4 y5 y6 y7" render="msgs5 text4"/>
+                </h:commandButton>
+            </h:form>
+        </div>
 
     </h:body>
 
