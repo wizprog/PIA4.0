@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -212,9 +214,12 @@ public class CreateAddLect {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession hs = (HttpSession) fc.getExternalContext().getSession(false);
         User u = (User) hs.getAttribute("user");
+        
+        String korisnik = "";
+        if (u != null) korisnik = u.getUsername();
         try {
             tx = session.beginTransaction();
-            List contacts = session.createQuery("FROM InContact").list();
+            /*     List contacts = session.createQuery("FROM InContact").list();
             for (Iterator iterator = contacts.iterator(); iterator.hasNext();) {
                 InContact con = (InContact) iterator.next();
                 if (con.getUsername().equals(u.getUsername())) {
@@ -224,7 +229,21 @@ public class CreateAddLect {
                     Kompanija k = (Kompanija) comp.get(0);
                     ls.add(k.getName());
                 }
+            }  */
+            String sql = "SELECT DISTINCT kompanija.Name FROM user,kompanija,incontact,moneycontract,donationcontract\n"
+                    + "WHERE user.Username = '"+korisnik+"' AND user.Username = incontact.Username AND incontact.PIB = kompanija.PIB\n"
+                    + "AND ( (kompanija.PIB = donationcontract.PIB AND donationcontract.DueDate > now() ) OR (kompanija.PIB = moneycontract.PIB) AND moneycontract.DueDate > now())";
+
+            SQLQuery query = session.createSQLQuery(sql);
+            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List companyList = query.list();
+            
+             for (Object object : companyList) {
+                Map row = (Map) object;
+                String cmp = (String) row.get("Name");
+                ls.add(cmp);
             }
+
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -265,7 +284,7 @@ public class CreateAddLect {
         clear();
     }
 
-    public void clear() {   
+    public void clear() {
         this.addCompany = null;
         this.addName = null;
         this.addEnterDate = null;
@@ -276,7 +295,7 @@ public class CreateAddLect {
         this.lecTime = null;
         this.lecAuditorium = null;
         this.lecLecturer = null;
-        this.lecBiography = null; 
+        this.lecBiography = null;
     }
 
 }

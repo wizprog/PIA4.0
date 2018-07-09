@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -38,7 +39,7 @@ import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineModel;
 
 @ManagedBean(name = "basicTimelineView")
-@ViewScoped
+@SessionScoped
 public class BasicTimelineView implements Serializable {
 
     private TimelineModel model;
@@ -52,8 +53,7 @@ public class BasicTimelineView implements Serializable {
     private boolean showCurrentTime = true;
     private boolean showNavigation = false;
 
-    @PostConstruct
-    protected void initialize() {
+    public void initialize() {
         model = new TimelineModel();
 
         SessionFactory sessionF = HibernateUtil.getSessionFactory();
@@ -63,12 +63,12 @@ public class BasicTimelineView implements Serializable {
         try {
             tx = session.beginTransaction();
             String sql = "SELECT kompanija.Name,package.PackName,donationcontract.DueDate FROM kompanija,donationcontract,package\n"
-                    + "WHERE kompanija.PIB = donationcontract.PIB AND donationcontract.IdP = package.IdP AND donationcontract.DueDate < DATE_ADD(now(), INTERVAL 18 MONTH) AND donationcontract.DueDate > now()\n"
+                    + "WHERE kompanija.PIB = donationcontract.PIB AND donationcontract.IdP = package.IdP AND donationcontract.DueDate < DATE_ADD(now(), INTERVAL 6 MONTH) AND donationcontract.DueDate > now()\n"
                     + "      \n"
                     + "UNION \n"
                     + "\n"
                     + "SELECT kompanija.Name,package.PackName,moneycontract.DueDate FROM kompanija,moneycontract,package\n"
-                    + "WHERE kompanija.PIB = moneycontract.PIB AND moneycontract.IdP = package.IdP  AND moneycontract.DueDate < DATE_ADD(now(), INTERVAL 18 MONTH) AND moneycontract.DueDate> now()";
+                    + "WHERE kompanija.PIB = moneycontract.PIB AND moneycontract.IdP = package.IdP  AND moneycontract.DueDate < DATE_ADD(now(), INTERVAL 6 MONTH) AND moneycontract.DueDate> now()";
 
             SQLQuery query = session.createSQLQuery(sql);
             query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);

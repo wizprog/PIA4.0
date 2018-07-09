@@ -159,6 +159,7 @@
                             <f:ajax execute="username password" render="Error" />
                         </h:commandButton>
                     </h:panelGrid>
+                   <b> <h:outputText id="Error" value="#{login.error}" style="color:red;"/>	</b>
                 </h:form>
                 <br/> <br/> <br/> <br/>
                 <h:form>
@@ -166,7 +167,6 @@
                         <f:ajax render=""/>
                     </h:commandButton>
                 </h:form>
-                <b>  <h:outputText id="Error" value="#{login.error}" style="color:red;"/>	</b>
                 <b>  <h:message id="m1" for="password" style="color:red"/></b>
             </div>     
         </div>

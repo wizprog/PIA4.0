@@ -105,6 +105,7 @@
                 transition: 0.3s;
                 cursor: pointer;
                 display: block;
+                margin-top:120%;
             }
 
             .sidenav input[type="submit"]:hover {
@@ -216,7 +217,7 @@
 
     </h:head>
 
-    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();aprove.onLoad();contractCreator.onLoad()} start()">
+    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();aprove.onLoad();contractCreator.onLoad();putInCharge.onLoad()} start()">
 
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
@@ -230,6 +231,7 @@
             <button class="tablink" onclick="openPage('CreatePackage', this); closeNav();">New package</button>
             <button class="tablink" onclick="openPage('NewMoneyContract', this); closeNav();">Money contract</button>
             <button class="tablink" onclick="openPage('NewDonationContract', this); closeNav();">Donation contract</button>
+            <button class="tablink" onclick="openPage('PutInCharge', this); closeNav();">Put in charge</button>
 
             <h:form>
                 <h:commandButton value="Log out" action="#{login.logout}"/>
@@ -584,6 +586,28 @@
                 </h:panelGrid>
 
                 <h:commandButton action="#{createAddLect.createDonationContract()}" value="Create contract" id="y"/>
+            </h:form>
+        </div>
+        
+        <div id="PutInCharge" class="tabcontent" align="center">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding = "10">
+                    <p style="color:white;font-size: 20px!important;margin-left:50px!important">Users:</p>
+                    <p:selectOneMenu value="#{putInCharge.chosenUser}" id="xx1" >
+                        <f:selectItems value="#{putInCharge.listOfUsers}" />
+                    </p:selectOneMenu>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:50px!important">Companies:</p>
+                    <p:selectOneMenu value="#{putInCharge.chosenCompanie}" id="xx2" >
+                        <f:selectItems value="#{putInCharge.listOfCompanies}" />
+                    </p:selectOneMenu>
+
+               </h:panelGrid>
+               <h:commandButton action="#{putInCharge.putInCharge()}" value="Put in charge">
+                   <f:ajax execute="xx1 xx2" render="xx3"/>
+               </h:commandButton>
+               <br/> <br/>
+               <h:outputText value="#{putInCharge.errormsg}" style="color:red;font-size: 20px!important" id="xx3"/>
             </h:form>
         </div>
 

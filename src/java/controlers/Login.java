@@ -109,9 +109,9 @@ public class Login {
                 }
                 FacesContext.getCurrentInstance().responseComplete();
                 this.error = "";
-            } else {
-                this.error = "No such user";
-            }
+            }  
+            this.error = "No such user";
+            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             this.error = "Error occurred";

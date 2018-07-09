@@ -100,6 +100,7 @@
                 transition: 0.3s;
                 cursor: pointer;
                 display: block;
+                margin-top:230%;
             }
 
             .sidenav input[type="submit"]:hover {
@@ -222,7 +223,7 @@
             <button class="tablink" onclick="openPage('Adds', this); closeNav();">Adds</button>
             <button class="tablink" onclick="openPage('Lectures', this); closeNav();">Lectures</button>          
             <h:form>
-                <h:commandButton value="Log out" action="#{login.logout}"/>
+                <h:commandButton value="Log out" action="#{login.logout}" style=""/>
             </h:form>          
         </div>
 
@@ -251,7 +252,7 @@
             <br/> <br/>
             
             
-            <p:dataTable value="#{search.companyList}" var="item"  rows="20" id="companytable" >
+            <p:dataTable value="#{search.companyList}" var="item"  rows="20" id="companytable" style="width:800px!important">
                 <p:column>
                     <f:facet name="header">
                         <h:outputText  value="PIB"/>
@@ -263,6 +264,18 @@
                         <h:outputText value="Name"/>
                     </f:facet>
                     <h:outputText value="#{item.name}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Address"/>
+                    </f:facet>
+                    <h:outputText value="#{item.address}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Contact email"/>
+                    </f:facet>
+                    <h:outputText value="#{item.contactEmail}" />
                 </p:column>
             </p:dataTable>
             
@@ -316,10 +329,14 @@
                         rowsPerPageTemplate="6,12,16">		 
                 <f:facet name="header">
                     Adds
-                </f:facet>	 
+                </f:facet>	
+                
                 <p:panel header="#{add.name}" style="text-align:center">
                     <h:panelGrid columns="1" style="width:100%">		 
                         Description: <h:outputText value="#{add.description}" />
+                        Post date: <h:outputText value="#{add.enterdate}">
+                             <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                        </h:outputText>
                         <h:outputText value="- Practice" rendered="#{add.practice}"/>
                         <h:outputText value="- Employment" rendered="#{add.employment}"/>
                     </h:panelGrid>

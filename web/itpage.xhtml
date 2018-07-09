@@ -105,6 +105,7 @@
                 transition: 0.3s;
                 cursor: pointer;
                 display: block;
+                margin-top:180%;
             }
 
             .sidenav input[type="submit"]:hover {
@@ -216,7 +217,7 @@
 
     </h:head>
 
-    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();chartView.init();itDash.onLoadTable1();itDash.onLoadTable2();contractCreator.onLoad()} start()">
+    <h:body onload="#{createAddLect.onLoad();partnerSearch.search();chartView.init();itDash.onLoadTable1();itDash.onLoadTable2();contractCreator.onLoad();basicTimelineView.initialize()} start()">
 
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
