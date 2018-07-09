@@ -29,13 +29,23 @@ public class ControlerIn {
     private String userGender;
     private String userLinkedIn;
     private Date userDate;
-    private UploadedFile file;
+    private String file;
 
-    public UploadedFile getFile() {
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getFile() {
         return file;
     }
 
-    public void setFile(UploadedFile file) {
+    public void setFile(String file) {
         this.file = file;
     }
 
@@ -117,7 +127,10 @@ public class ControlerIn {
         Transaction tx = null;
         System.out.println(userDate);
         try {
-
+            boolean check = passCheck(userPass);
+            if (!check) {
+                throw new Exception();
+            }
             byte[] bytesOfMessage = userPass.getBytes("UTF-8");
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] thedigest = md.digest(bytesOfMessage);
@@ -129,10 +142,14 @@ public class ControlerIn {
 
             tx = session.beginTransaction();
             Waiting w = new Waiting(userUsername, hexString.toString(), userName, userSurname, userInstitution, userEmail, userGender, userLinkedIn, userDate);
+            w.setImage(this.file);
             //User u = new User(userUsername,hexString.toString(),userName,userSurname,userInstitution,userEmail,userGender,userLinkedIn,userDate,"User");
             session.save(w);
+            this.msg = "Account created";
+            clear();
             tx.commit();
         } catch (Exception e) {
+            this.msg = "Error occurred";
             if (tx != null) {
                 tx.rollback();
             }
@@ -141,14 +158,17 @@ public class ControlerIn {
             session.close();
         }
     }
-    
-    public void createAccountAdmin(){
-         SessionFactory sessionF = HibernateUtil.getSessionFactory();
+
+    public void createAccountAdmin() {
+        SessionFactory sessionF = HibernateUtil.getSessionFactory();
         Session session = sessionF.openSession();
         Transaction tx = null;
         System.out.println(userDate);
         try {
-
+            boolean check = passCheck(userPass);
+            if (!check) {
+                throw new Exception();
+            }
             byte[] bytesOfMessage = userPass.getBytes("UTF-8");
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] thedigest = md.digest(bytesOfMessage);
@@ -159,10 +179,14 @@ public class ControlerIn {
             }
 
             tx = session.beginTransaction();
-            User u = new User(userUsername,hexString.toString(),userName,userSurname,userInstitution,userEmail,userGender,userLinkedIn,userDate,"User");
+            User u = new User(userUsername, hexString.toString(), userName, userSurname, userInstitution, userEmail, userGender, userLinkedIn, userDate, "User");
+            u.setImage(this.file);
             session.save(u);
+            this.msg = "Account created";
+            clear();
             tx.commit();
         } catch (Exception e) {
+            this.msg = "Error occurred";
             if (tx != null) {
                 tx.rollback();
             }
@@ -170,6 +194,76 @@ public class ControlerIn {
         } finally {
             session.close();
         }
+    }
+
+    private boolean passCheck(String pass) {
+
+        int capitalCount = 0;
+        int notCapitalCount = 0;
+        int numberCount = 0;
+        int specialChar = 0;
+
+        int length = pass.length();
+        if (length < 8 || length > 12) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (Character.isUpperCase(pass.charAt(i))) {
+                capitalCount++;
+            }
+        }
+        if (capitalCount == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (Character.isLowerCase(pass.charAt(i))) {
+                notCapitalCount++;
+            }
+        }
+        if (notCapitalCount < 3) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (Character.isDigit(pass.charAt(i))) {
+                numberCount++;
+            }
+        }
+        if (numberCount == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (!Character.isLetter(pass.charAt(i)) && !Character.isDigit(pass.charAt(i))) {
+                specialChar++;
+            }
+        }
+        if (specialChar == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < length - 2; i++) {
+            if (Character.isLetter(pass.charAt(i)) && Character.isLetter(pass.charAt(i + 1)) && Character.isLetter(pass.charAt(i + 2))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void clear() {
+        this.userUsername = null;
+        this.userPass = null;
+        this.userName = null;
+        this.userSurname = null;
+        this.userInstitution = null;
+        this.userEmail = null;
+        this.userGender = null;
+        this.userLinkedIn = null;
+        this.userDate = null;
+        this.file = null;
     }
 
 }

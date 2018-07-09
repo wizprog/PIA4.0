@@ -21,7 +21,9 @@ import org.hibernate.Transaction;
 import beans.MoneyContract;
 import beans.DonationContract;
 import java.util.Calendar;
+import java.util.Map;
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -217,12 +219,47 @@ public class ContractCreator {
         try {
             tx = session.beginTransaction();
             List statusList = session.createQuery("FROM Status").list();
-            List packageList = session.createQuery("FROM Package").list();
-            List companyList = session.createQuery("FROM Kompanija").list();
+
+            //    List packageList = session.createQuery("FROM Package").list();
+            //    List companyList = session.createQuery("FROM Kompanija").list();
+            String sql = "SELECT PackName FROM (\n"
+                    + "\n"
+                    + "SELECT PackName,SUM(Broj) AS 'BrojPaketa', Hue FROM\n"
+                    + "(\n"
+                    + "\n"
+                    + "    SELECT package.PackName, COUNT(donationcontract.IdP) AS 'Broj', package.MaxComp AS 'Hue'\n"
+                    + "    FROM package\n"
+                    + "    LEFT JOIN donationcontract ON package.IdP = donationcontract.IdP\n"
+                    + "    GROUP BY package.PackName\n"
+                    + "\n"
+                    + "    UNION\n"
+                    + "\n"
+                    + "    SELECT package.PackName, COUNT(moneycontract.IdP) AS 'Broj', package.MaxComp AS 'Hue'\n"
+                    + "    FROM package\n"
+                    + "    LEFT JOIN moneycontract ON package.IdP = moneycontract.IdP\n"
+                    + "    GROUP BY package.PackName\n"
+                    + " ) AS T \n"
+                    + " GROUP BY PackName\n"
+                    + "    ) AS X \n"
+                    + " WHERE BrojPaketa < Hue";
+            SQLQuery query = session.createSQLQuery(sql);
+            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List packageList = query.list();
+
+            String sqlNew = "SELECT kompanija.Name FROM kompanija\n"
+                    + "WHERE kompanija.Name NOT IN (\n"
+                    + "SELECT kompanija.Name FROM kompanija,donationcontract WHERE kompanija.PIB = donationcontract.PIB and donationcontract.DueDate > now()\n"
+                    + "UNION \n"
+                    + "SELECT kompanija.Name FROM kompanija,moneycontract WHERE kompanija.PIB = moneycontract.PIB  and moneycontract.DueDate > now())";
+            SQLQuery queryNew = session.createSQLQuery(sqlNew);
+            queryNew.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List companyList = queryNew.list();
+
             for (Iterator iterator = statusList.iterator(); iterator.hasNext();) {
                 Status s = (Status) iterator.next();
                 ls.add(s.getName());
             }
+            /*       
             for (Iterator iterator = packageList.iterator(); iterator.hasNext();) {
                 beans.Package s = (beans.Package) iterator.next();
                 ls1.add(s.getName());
@@ -230,7 +267,20 @@ public class ContractCreator {
             for (Iterator iterator = companyList.iterator(); iterator.hasNext();) {
                 Kompanija s = (Kompanija) iterator.next();
                 ls2.add(s.getName());
+            }*/
+
+            for (Object object : packageList) {
+                Map row = (Map) object;
+                String pack = (String) row.get("PackName");
+                ls1.add(pack);
             }
+
+            for (Object object : companyList) {
+                Map row = (Map) object;
+                String comp = (String) row.get("Name");
+                ls2.add(comp);
+            }
+
             this.listStatus = ls;
             this.listPackage = ls1;
             this.listOfCompanies = ls2;
@@ -283,10 +333,10 @@ public class ContractCreator {
             Calendar c = Calendar.getInstance();
             c.setTime(this.moneyDate);
             c.add(Calendar.YEAR, years);
-            
-            System.out.println("Parametri: "+this.moneyIdP +" "+this.moneyDate+" "+status+" "+this.moneyBill+" "+this.moneyPayment+" "+this.dateOfPayment+" "+pib+" "+this.moneyComment+" "+c.getTime() );
-          
-            MoneyContract m = new MoneyContract(this.moneyIdP,this.moneyDate,status,this.moneyBill,this.moneyPayment,this.dateOfPayment,pib,this.moneyComment,c.getTime());
+
+            System.out.println("Parametri: " + this.moneyIdP + " " + this.moneyDate + " " + status + " " + this.moneyBill + " " + this.moneyPayment + " " + this.dateOfPayment + " " + pib + " " + this.moneyComment + " " + c.getTime());
+
+            MoneyContract m = new MoneyContract(this.moneyIdP, this.moneyDate, status, this.moneyBill, this.moneyPayment, this.dateOfPayment, pib, this.moneyComment, c.getTime());
             session.save(m);
             tx.commit();
         } catch (Exception e) {
@@ -297,6 +347,7 @@ public class ContractCreator {
         } finally {
             session.close();
         }
+        clear();
     }
 
     public void createDonationContract() {
@@ -337,7 +388,7 @@ public class ContractCreator {
             Calendar c = Calendar.getInstance();
             c.setTime(this.donationDate);
             c.add(Calendar.YEAR, years);
-            DonationContract d = new DonationContract(this.donationIdP,status,this.donationDesription,this.donationDate,this.donationShipmentDate,this.donationComment,pib,c.getTime());
+            DonationContract d = new DonationContract(this.donationIdP, status, this.donationDesription, this.donationDate, this.donationShipmentDate, this.donationComment, pib, c.getTime());
             session.save(d);
             tx.commit();
         } catch (Exception e) {
@@ -348,5 +399,20 @@ public class ContractCreator {
         } finally {
             session.close();
         }
+        clear();
+    }
+
+    private void clear() {
+
+        this.moneyDate = null;
+        this.moneyBill = false;
+        this.moneyPayment = false;
+        this.dateOfPayment = null;
+        this.moneyComment = null;
+
+        this.donationDesription = null;
+        this.donationDate = null;
+        this.donationShipmentDate = null;
+        this.donationComment = null;
     }
 }

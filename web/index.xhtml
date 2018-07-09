@@ -233,11 +233,13 @@
                         <p:inputText value="#{controlerIn.userLinkedIn}" id="ln1"/>      
 
                         <p>Image:</p>	 
-                        <p:fileUpload id="im1" value="#{controlerIn.image}" mode="simple" />            
+                        <p:inputText id="im1" value="#{controlerIn.file}" />      
+                        
+                        <h:outputText id="ErrorIn" value="#{controlerIn.msg}" style="color:red;font-size:20px;margin-left: 30%"/>
                     </h:panelGrid>
 
                     <h:commandButton value="CREATE ACCOUNT" action="#{controlerIn.createAccount()}" class="btn btn-info">
-                        <f:ajax  execute="us1 nm1 su1 em1 in1 console nonFeedback ln1 button im1" render="msgs"/>
+                        <f:ajax  execute="us1 nm1 su1 em1 in1 console nonFeedback ln1 button im1" render="msgs ErrorIn us1 nm1 su1 em1 in1 console nonFeedback ln1 button im1"/>
                     </h:commandButton>
                 </h:form>
             </div>

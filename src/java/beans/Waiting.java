@@ -46,9 +46,12 @@ public class Waiting {
 
     @Column(name = "BirthDate")
     private Date BirthDate;
-    
-    public Waiting(){
-        
+
+    @Column(name = "Image")
+    private String image;
+
+    public Waiting() {
+
     }
 
     public Waiting(String username, String password, String name, String prezime, String institution, String Email, String Gender, String LinkedIn, Date BirthDate) {
@@ -61,6 +64,14 @@ public class Waiting {
         this.Gender = Gender;
         this.LinkedIn = LinkedIn;
         this.BirthDate = BirthDate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getUsername() {
@@ -134,6 +145,5 @@ public class Waiting {
     public void setBirthDate(Date BirthDate) {
         this.BirthDate = BirthDate;
     }
-
 
 }
