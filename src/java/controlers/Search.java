@@ -164,7 +164,7 @@ public class Search {
                 Map row = (Map) object;
                 String name = (String) row.get("PackName");
                 int price = (int) row.get("Price");
-                Package p = new Package(1, name, price, 0, 0);
+                Package p = new Package(name, price, 0, 0);
                 ls.add(p);
             }
             tx.commit();

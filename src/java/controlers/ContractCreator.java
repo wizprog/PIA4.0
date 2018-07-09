@@ -257,7 +257,7 @@ public class ContractCreator {
         try {
             tx = session.beginTransaction();
             Criteria cr = session.createCriteria(beans.Package.class);
-            cr.add(Restrictions.eq("PackName", this.selectedPackage));
+            cr.add(Restrictions.eq("name", this.selectedPackage));
             List pack = cr.list();
             for (Iterator iterator = pack.iterator(); iterator.hasNext();) {
                 beans.Package p = (beans.Package) iterator.next();
@@ -266,7 +266,7 @@ public class ContractCreator {
             }
 
             Criteria x1 = session.createCriteria(Kompanija.class);
-            x1.add(Restrictions.eq("Name", this.selectedCompany));
+            x1.add(Restrictions.eq("name", this.selectedCompany));
             List comp = x1.list();
             for (Iterator iterator = comp.iterator(); iterator.hasNext();) {
                 Kompanija p = (Kompanija) iterator.next();
@@ -274,15 +274,18 @@ public class ContractCreator {
             }
 
             Criteria x2 = session.createCriteria(Status.class);
-            x2.add(Restrictions.eq("Name", this.selectedStatus));
+            x2.add(Restrictions.eq("name", this.selectedStatus));
             List stat = x2.list();
             for (Iterator iterator = stat.iterator(); iterator.hasNext();) {
                 Status p = (Status) iterator.next();
                 status = p.getIdStatus();
             }
             Calendar c = Calendar.getInstance();
+            c.setTime(this.moneyDate);
             c.add(Calendar.YEAR, years);
             
+            System.out.println("Parametri: "+this.moneyIdP +" "+this.moneyDate+" "+status+" "+this.moneyBill+" "+this.moneyPayment+" "+this.dateOfPayment+" "+pib+" "+this.moneyComment+" "+c.getTime() );
+          
             MoneyContract m = new MoneyContract(this.moneyIdP,this.moneyDate,status,this.moneyBill,this.moneyPayment,this.dateOfPayment,pib,this.moneyComment,c.getTime());
             session.save(m);
             tx.commit();
@@ -308,7 +311,7 @@ public class ContractCreator {
             tx = session.beginTransaction();
 
             Criteria cr = session.createCriteria(beans.Package.class);
-            cr.add(Restrictions.eq("PackName", this.selectedPackage));
+            cr.add(Restrictions.eq("name", this.selectedPackage));
             List pack = cr.list();
             for (Iterator iterator = pack.iterator(); iterator.hasNext();) {
                 beans.Package p = (beans.Package) iterator.next();
@@ -317,7 +320,7 @@ public class ContractCreator {
             }
 
             Criteria x1 = session.createCriteria(Kompanija.class);
-            x1.add(Restrictions.eq("Name", this.selectedCompany));
+            x1.add(Restrictions.eq("name", this.selectedCompany));
             List comp = x1.list();
             for (Iterator iterator = comp.iterator(); iterator.hasNext();) {
                 Kompanija p = (Kompanija) iterator.next();
@@ -325,13 +328,14 @@ public class ContractCreator {
             }
 
             Criteria x2 = session.createCriteria(Status.class);
-            x2.add(Restrictions.eq("Name", this.selectedStatus));
+            x2.add(Restrictions.eq("name", this.selectedStatus));
             List stat = x2.list();
             for (Iterator iterator = stat.iterator(); iterator.hasNext();) {
                 Status p = (Status) iterator.next();
                 status = p.getIdStatus();
             }
             Calendar c = Calendar.getInstance();
+            c.setTime(this.donationDate);
             c.add(Calendar.YEAR, years);
             DonationContract d = new DonationContract(this.donationIdP,status,this.donationDesription,this.donationDate,this.donationShipmentDate,this.donationComment,pib,c.getTime());
             session.save(d);

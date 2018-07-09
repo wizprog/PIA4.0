@@ -29,7 +29,7 @@ public class MoneyContract {
     @Column(name = "Date")
     private Date date;
 
-    @Column(name = "Status")
+    @Column(name = "IdStatus")
     private int status;
 
     @Column(name = "Bill")

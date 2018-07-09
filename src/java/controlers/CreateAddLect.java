@@ -36,14 +36,14 @@ public class CreateAddLect {
     private Date addEnterDate;
     private String addDescription;
     private String[] addPracEmp;
-    
+
     private String lecName;
     private Date lecDate;
     private Date lecTime;
     private String lecAuditorium;
     private String lecLecturer;
     private String lecBiography;
-    
+
     private String lecText;
     private String addText;
 
@@ -61,7 +61,7 @@ public class CreateAddLect {
 
     public void setAddText(String addText) {
         this.addText = addText;
-    }  
+    }
 
     public String getLecName() {
         return lecName;
@@ -186,7 +186,8 @@ public class CreateAddLect {
                     e = true;
                 }
             }
-            Advertisement a = new Advertisement(this.addName, this.addDescription, p, e, u.getUsername(), new Date(),this.addCompany);
+            System.out.print("niz:" + this.addPracEmp);
+            Advertisement a = new Advertisement(this.addName, this.addDescription, p, e, u.getUsername(), new Date(), this.addCompany);
             session.save(a);
             tx.commit();
             this.addText = "Advertisement created";
@@ -199,9 +200,10 @@ public class CreateAddLect {
         } finally {
             session.close();
         }
+        clear();
     }
 
-    public void onLoad() { 
+    public void onLoad() {
         List<String> ls = new ArrayList<String>();
         SessionFactory sessionF = HibernateUtil.getSessionFactory();
         Session session = sessionF.openSession();
@@ -234,20 +236,20 @@ public class CreateAddLect {
         }
         this.addUserCompanies = ls;
     }
-    
-     public void createLec() {
+
+    public void createLec() {
         this.lecText = "";
         SessionFactory sessionF = HibernateUtil.getSessionFactory();
         Session session = sessionF.openSession();
         Transaction tx = null;
-        
+
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession hs = (HttpSession) fc.getExternalContext().getSession(false);
         User u = (User) hs.getAttribute("user");
-        
+
         try {
             tx = session.beginTransaction();
-            Lectures l = new Lectures(this.lecName,this.lecDate,this.lecTime,this.lecAuditorium,this.lecLecturer,this.lecBiography,u.getUsername(),this.addCompany);
+            Lectures l = new Lectures(this.lecName, this.lecDate, this.lecTime, this.lecAuditorium, this.lecLecturer, this.lecBiography, u.getUsername(), this.addCompany);
             session.save(l);
             tx.commit();
             this.lecText = "Lecture created";
@@ -259,7 +261,22 @@ public class CreateAddLect {
             e.printStackTrace();
         } finally {
             session.close();
-        }       
-     }
+        }
+        clear();
+    }
+
+    public void clear() {   
+        this.addCompany = null;
+        this.addName = null;
+        this.addEnterDate = null;
+        this.addDescription = null;
+        this.addPracEmp = null;
+        this.lecName = null;
+        this.lecDate = null;
+        this.lecTime = null;
+        this.lecAuditorium = null;
+        this.lecLecturer = null;
+        this.lecBiography = null; 
+    }
 
 }

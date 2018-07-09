@@ -11,23 +11,59 @@
         <script>
 
             function start() {
-                document.getElementById("HomeS").click();
+            document.getElementById("HomeS").click();
             }
 
             function openPage(pageName, elmnt, color) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i  &lt; tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i &lt; tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            }
 
-                tablinks = document.getElementsByClassName("tablink");
-                for (i = 0; i  &lt; tablinks.length; i++) {
-                    tablinks[i].style.backgroundColor = "";
-                }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i &lt; tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+            }
 
-                document.getElementById(pageName).style.display = "block";
-                elmnt.style.backgroundColor = color;
+            document.getElementById(pageName).style.display = "block";
+            elmnt.style.backgroundColor = color;
+            }
+
+            function passwordCheck(){
+            var pass1 = document.getElementById("nonFeedback").value;
+            var pass2 = document.getElementById("nonFeedbackRepeat").value;
+            if (pass1 != pass2){
+            alert("Passwords don't match");
+            } else{
+
+            var loginData = {
+                    userUsername : document.getElementById("us1").value,
+                    userPass : document.getElementById("nonFeedback").value,
+                    userName : document.getElementById("nm1").value,
+                    userSurname: document.getElementById("su1").value,
+                    userInstitution: document.getElementById("in1").value,
+                    userEmail: document.getElementById("em1").value,
+                    userGender: document.getElementById("console").value,
+                    userLinkedIn: document.getElementById("ln1").value,
+                    userDate: document.getElementById("button").value
+            }
+            
+            var str = $("#createUser").serializeArray();
+            
+            $.ajax({
+            url: '@Url.Action("controlerIn.createAccount()")',
+                    type: 'GET',
+                    cache: false,
+                    data: str,
+                    success: function (data) {
+                        alert("Success");
+                    },
+                    error: function (data) {
+                        alert("Error");
+                    }
+            });
+            }
             }
         </script>
 
@@ -119,11 +155,12 @@
                             <f:validateLength minimum="8" maximum="12" for="password"/>
                         </h:inputSecret>
 
-                        <h:commandButton value="LOGIN" action="#{login.login}" class="btn btn-info">
+                        <h:commandButton value="LOGIN" action="#{login.login}" class="btn btn-info" style="margin-left: 100%!important">
                             <f:ajax execute="username password" render="Error" />
                         </h:commandButton>
                     </h:panelGrid>
                 </h:form>
+                <br/> <br/> <br/> <br/>
                 <h:form>
                     <h:commandButton value="Forgot Password" onclick="PF('dlg2').show();" class="btn btn-info"> 
                         <f:ajax render=""/>
@@ -155,7 +192,7 @@
         <div id="SignUp" class="tabcontent">
             <h:graphicImage value = "assets/avatar.png" class="avatar2"/> 
             <div class="signup-box" align="center" id="scrollable_div">
-                 <h:form>
+                <h:form class="createUser">
                     <h:panelGrid columns="2" cellpadding = "20">
                         <f:facet name="header">
                             <p:messages id="msgs" />

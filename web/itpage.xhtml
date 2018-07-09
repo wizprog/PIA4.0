@@ -243,8 +243,24 @@
                 </h:commandButton>
             </h:form>
 
-            <p:dialog widgetVar="dlgx" modal="true" height="450" width="100%" styleClass="customDialog">
-                <p:chart type="line" model="#{chartView.lineModel1}" style="height:400px;"/>
+            <p:dialog widgetVar="dlgx" modal="true" height="300" width="100%" styleClass="customDialog">
+                <p:growl id="growl" showSummary="true" showDetail="true">
+                    <p:autoUpdate />
+                </p:growl>
+
+                <p:timeline id="timeline" value="#{basicTimelineView.model}" height="250px"
+                            selectable="#{basicTimelineView.selectable}"
+                            zoomable="#{basicTimelineView.zoomable}"
+                            moveable="#{basicTimelineView.moveable}"
+                            stackEvents="#{basicTimelineView.stackEvents}"
+                            axisOnTop="#{basicTimelineView.axisOnTop}"
+                            eventStyle="#{basicTimelineView.eventStyle}"
+                            showCurrentTime="#{basicTimelineView.showCurrentTime}"
+                            showNavigation="#{basicTimelineView.showNavigation}">
+
+                    <p:ajax event="select" listener="#{basicTimelineView.onSelect}"/>
+
+                </p:timeline>
             </p:dialog> 
 
             <br/><br/>
@@ -256,14 +272,18 @@
                 </p:column>
             </p:dataTable>
 
-            <br/> <br/>       
+            <br/><br/>
             <h:outputText value="Previous 6 months" style="font-size:20px;cursor:pointer;color:white"/>
-            <p:dataTable value="#{itDash.list2}" var="company1" rows="20" selectionMode="single" selection="#{itDash.selectedCompany2}" rowKey="#{company2.PIB}">
-                <p:ajax event="rowSelect" listener="#{itDash.onRowSelect2()}"/>
+            
+            <p:dataTable value="#{itDash.list2}" var="company2" rows="20" selectionMode="single" selection="#{itDash.selectedCompany2}" rowKey="#{company2.PIB}">
+                <p:ajax event="rowSelect" listener="#{itDash.onRowSelect2}"/>
                 <p:column headerText="Company name">
-                    <h:outputText value="#{company1.name}" />
+                    <h:outputText value="#{company2.name}" />
                 </p:column>
             </p:dataTable>
+
+                 
+
 
         </div>
 
@@ -406,7 +426,7 @@
                 </h:panelGrid>
 
                 <h:commandButton action="#{createAddLect.createLec()}" value="Create lecture" id="b8">
-                    <f:ajax  execute="b1 b2 b3 b4 b5 b6 b7" render="msgs3 text2"/>
+                    <f:ajax  execute="b1 b2 b3 b4 b5 b6 b7" render="msgs3 text2 b1 b2 b3 b4 b5 b6 b7"/>
                 </h:commandButton>
 
                 <br/> <br/>
@@ -500,8 +520,8 @@
 
                 </h:panelGrid>
 
-                <h:commandButton action="#{createAddLect.createDonationContract()}" value="Create contract" id="y">
-                    <f:ajax  execute="y1 y2 y3 y4 y5 y6 y7" render="msgs5 text4"/>
+                <h:commandButton action="#{contractCreator.createDonationContract()}" value="Create contract" id="y">
+                    <f:ajax  execute="y1 y2 y3 y4 y5 y6 y7" render="msgs5 text4 y1 y2 y3 y4 y5 y6 y7"/>
                 </h:commandButton>
             </h:form>
         </div>

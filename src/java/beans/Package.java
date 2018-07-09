@@ -28,9 +28,8 @@ public class Package {
     public Package() {
     }
 
-    public Package(int idp, String name, int price, int length, int maxcomp) {
+    public Package( String name, int price, int length, int maxcomp) {
         super();
-        this.idp = idp;
         this.name = name;
         this.price = price;
         this.length = length;

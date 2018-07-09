@@ -416,11 +416,85 @@
         </div>
 
         <div id="CreateUser" class="tabcontent" align="center">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding = "10">
 
+                    <f:facet name="header">
+                        <p:messages id="msgs6" />
+                    </f:facet>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Username:</p>
+                    <p:inputText value="#{controlerIn.userUsername}" required="true" requiredMessage="Username is required." id="us1"/>     
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Name:</p>
+                    <p:inputText value="#{controlerIn.userName}" required="true" requiredMessage="Name is required." id="nm1" />
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Surname:</p>
+                    <p:inputText value="#{controlerIn.userSurname}" required="true" requiredMessage="Surname is required." id="su1"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Date of birth:</p>
+                    <p:calendar id="button" value="#{controlerIn.userDate}" showOn="button" required="true" requiredMessage="Date of birth is required." />     
+
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">E-mail:</p>
+                    <p:inputText value="#{controlerIn.userEmail}" required="true" requiredMessage="Email is required." id="em1"/>
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Institution:</p>
+                    <p:inputText value="#{controlerIn.userInstitution}" id="in1"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Gender:</p>
+                    <p:selectOneMenu id="console" value="#{controlerIn.userGender}" style="width:230px">
+                        <f:selectItem itemLabel="Man" itemValue="Man" />
+                        <f:selectItem itemLabel="Women" itemValue="Women" />
+                    </p:selectOneMenu>    
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Password:</p>
+                    <p:password id="nonFeedback" value="#{controlerIn.userPass}" required="true" requiredMessage="Password is required." 
+                                validatorMessage="Password length must be between 8 and 12 characters">
+                        <f:validateLength minimum="8" maximum="12" for="nonFeedback"/>
+                    </p:password>
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Confirm password:</p>
+                    <p:password id="nonFeedbackRepeat" />    
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">LinkedIn link:</p>
+                    <p:inputText value="#{controlerIn.userLinkedIn}" id="ln1"/>      
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Image:</p>	 
+                    <p:fileUpload id="im1" value="#{controlerIn.image}" mode="simple" />       
+
+                </h:panelGrid>
+
+                <h:commandButton action="#{controlerIn.createAccountAdmin()}" value="Create package">
+                    <f:ajax  execute="us1 nm1 su1 em1 in1 console nonFeedback ln1 button im1" render="msgs6"/>
+                </h:commandButton>
+            </h:form>
         </div>
 
         <div id="CreatePackage" class="tabcontent" align="center">
 
+            <h:form>
+                <h:panelGrid columns="2" cellpadding = "20">
+
+                    <f:facet name="header">
+                        <p:messages id="msgs5" />
+                    </f:facet>
+
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Package name:</p>
+                    <p:inputText value="#{createPackage.packageName}" required="true" requiredMessage="Name is required." style="margin-right: 250px!important" id="z1"/> 
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Price:</p>
+                    <p:inputText id="z2" value="#{createPackage.prackagePrice}" required="true" requiredMessage="Price is required." />     
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Length:</p>
+                    <p:inputText id="z3" value="#{createPackage.packageLength}" required="true" requiredMessage="Length is required."  />
+
+                    <p style="color:white;font-size: 20px!important;margin-left:250px!important">Max companies:</p>
+                    <p:inputText value="#{createPackage.packageMaxCompanies}" required="true" requiredMessage="Max companies is required." style="margin-right: 250px!important" id="z4"/> 
+
+                </h:panelGrid>
+                <h:commandButton action="#{createPackage.create()}" value="Create package">
+                    <f:ajax execute="z1 z2 z3 z4" render="msgs5"/>
+                </h:commandButton>
+            </h:form>
         </div>
 
         <div id="NewMoneyContract" class="tabcontent" align="center">
