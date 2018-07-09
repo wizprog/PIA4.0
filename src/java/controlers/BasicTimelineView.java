@@ -9,12 +9,15 @@ package controlers;
  *
  * @author Marko
  */
+import beans.Advertisement;
+import beans.Kompanija;
 import database.HibernateUtil;
 import java.io.Serializable;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -22,11 +25,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineModel;
@@ -79,7 +85,7 @@ public class BasicTimelineView implements Serializable {
                 String text = df.format(dueDate);
                 System.out.println(text);
 
-                model.add(new TimelineEvent(cmpName + " " + pckName, dueDate));
+                model.add(new TimelineEvent(cmpName + "-" + pckName, dueDate));
 
             }
 
@@ -95,25 +101,55 @@ public class BasicTimelineView implements Serializable {
     }
 
     public void onSelect(TimelineSelectEvent e) {
+        System.out.println("CLICK");
         TimelineEvent timelineEvent = e.getTimelineEvent();
+        
+        Kompanija k = null;
 
         /*   FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected event:", timelineEvent.getData().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);*/
         System.out.println(timelineEvent.getData().toString());
+        String s = timelineEvent.getData().toString();
+        String arr[] = s.split("-", 2);
+        String company = arr[0];
+        
+        SessionFactory sessionF = HibernateUtil.getSessionFactory();
+        Session session = sessionF.openSession();
+        Transaction tx = null;
 
-        /*
-        System.out.print(((Kompanija) event.getObject()).getName());
         try {
-            if (event.getObject() != null) {
+            tx = session.beginTransaction();
+            
+            Criteria cr = session.createCriteria(Kompanija.class);
+            cr.add(Restrictions.eq("name", company));
+            List addList = cr.list();
+
+            for (Iterator iterator = addList.iterator(); iterator.hasNext();) {
+                Kompanija a = (Kompanija) iterator.next();
+                k = a;
+            }
+            
+            
+            tx.commit();
+        } catch (Exception x) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            x.printStackTrace();
+        } finally {
+            session.close();
+        }
+        
+
+        try {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 HttpSession hs = (HttpSession) fc.getExternalContext().getSession(false);
-                hs.setAttribute("company", (Kompanija) event.getObject());
+                hs.setAttribute("company", (Kompanija) k);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("dosie.xhtml");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception x) {
+            x.printStackTrace();
         }
-         */
+
     }
 
     public TimelineModel getModel() {

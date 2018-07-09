@@ -346,7 +346,18 @@
                     <f:facet name="header">
                         <h:outputText  value="Date" style="color:white"/>
                     </f:facet>
-                    <h:outputText  value="#{item.date}" styleClass="recordLabel" />
+                    <h:outputText  value="#{item.date}" styleClass="recordLabel" >
+                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText  value="Time" style="color:white"/>
+                    </f:facet>
+                    <h:outputText  value="#{item.time}" styleClass="recordLabel" >
+                        <f:convertDateTime pattern="HH:mm"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column>
@@ -379,7 +390,18 @@
                     <f:facet name="header">
                         <h:outputText  value="Date" style="color:white"/>
                     </f:facet>
-                    <h:outputText  value="#{item.date}" styleClass="recordLabel" />
+                    <h:outputText  value="#{item.date}" styleClass="recordLabel" >
+                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText  value="Time" style="color:white"/>
+                    </f:facet>
+                    <h:outputText  value="#{item.time}" styleClass="recordLabel" >
+                        <f:convertDateTime pattern="HH:mm"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column>

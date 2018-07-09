@@ -108,8 +108,12 @@ public class Search {
             if (searchString.length() != 0) {
                 help = "WHERE Name LIKE " + searchString + "%";
             }
-
-            List companies = session.createQuery("FROM Kompanija" + help).list();
+            
+            Criteria cr = session.createCriteria(Kompanija.class);
+            cr.add(Restrictions.like("name", "%"+searchString+"%")); 
+            List companies = cr.list();
+            
+            
             List packages = session.createQuery("FROM Package").list();
 
             for (Iterator iterator = companies.iterator(); iterator.hasNext();) {

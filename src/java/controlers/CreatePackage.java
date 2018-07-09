@@ -20,15 +20,23 @@ import org.hibernate.Transaction;
  *
  * @author Marko
  */
-
 @ManagedBean
 @SessionScoped
 public class CreatePackage {
-       
+
     private String packageName;
     private int prackagePrice;
     private int packageLength;
     private int packageMaxCompanies;
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public String getPackageName() {
         return packageName;
@@ -61,17 +69,19 @@ public class CreatePackage {
     public void setPackageMaxCompanies(int packageMaxCompanies) {
         this.packageMaxCompanies = packageMaxCompanies;
     }
-    
-    public void create(){
+
+    public void create() {
         SessionFactory sessionF = HibernateUtil.getSessionFactory();
         Session session = sessionF.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            beans.Package p = new beans.Package(this.packageName,this.prackagePrice,this.packageLength,this.packageMaxCompanies);
+            beans.Package p = new beans.Package(this.packageName, this.prackagePrice, this.packageLength, this.packageMaxCompanies);
             session.save(p);
             tx.commit();
+            this.msg = "Package created";
         } catch (Exception e) {
+            this.msg = "Error occurred";
             if (tx != null) {
                 tx.rollback();
             }
@@ -79,5 +89,13 @@ public class CreatePackage {
         } finally {
             session.close();
         }
+        clear();
+    }
+
+    private void clear() {
+        this.packageName = null;
+        this.prackagePrice = 0;
+        this.packageLength = 0;
+        this.packageMaxCompanies = 0;
     }
 }

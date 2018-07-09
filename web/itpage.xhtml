@@ -337,14 +337,14 @@
                     <p:selectBooleanCheckbox value="#{partnerSearch.actual}" id="c3"/>
                 </h:panelGrid> 
 
-                <h:commandButton value="Search partners" action="#{login.logout}">
-                    <f:ajax execute="c1 c2 c3" render=""/>
+                <h:commandButton value="Search partners" action="#{partnerSearch.search()}">
+                    <f:ajax execute="c1 c2 c3" render="tabelapartnera"/>
                 </h:commandButton>
             </h:form>
 
             <br/><br/>
 
-            <p:dataTable value="#{partnerSearch.companyList}" var="company" paginator="true" rows="20" lazy="false">
+            <p:dataTable value="#{partnerSearch.companyList}" var="company" paginator="true" rows="20" lazy="false" id="tabelapartnera">
                 <p:column headerText="Company name">
                     <h:outputText value="#{company.name}" />
                 </p:column>

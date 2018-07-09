@@ -68,8 +68,10 @@ public class PartnerSearch {
         SessionFactory sessionF = HibernateUtil.getSessionFactory();
         Session session = sessionF.openSession();
         Transaction tx = null;
-        String s1 = "";
-        String s2 = "";
+        String s1 = " ";
+        String s2 = " ";
+        if (this.companyName == null) this.companyName="";
+        if (this.packageName == null) this.packageName="";
         if (this.actual) {
             s1 = " AND donationcontract.DueDate > now()";
             s2 = " AND moneycontract.DueDate > now()";
@@ -78,10 +80,10 @@ public class PartnerSearch {
             tx = session.beginTransaction();
             String sql = "SELECT DISTINCT kompanija.PIB FROM kompanija,donationcontract,moneycontract,package \n"
                     + "WHERE\n"
-                    + "((kompanija.PIB = donationcontract.PIB  AND donationcontract.DueDate > now()) OR (kompanija.PIB = moneycontract.PIB AND moneycontract.DueDate > now()))\n"
-                    + "AND kompanija.Name LIKE '%%' \n"
-                    + "AND ((kompanija.PIB = moneycontract.PIB AND moneycontract.IdP = package.IdP AND package.PackName LIKE '%%')\n"
-                    + "     OR (kompanija.PIB = donationcontract.PIB AND donationcontract.IdP = package.IdP AND package.PackName LIKE '%%'))";
+                    + "((kompanija.PIB = donationcontract.PIB  "+s1+") OR (kompanija.PIB = moneycontract.PIB "+s2+"))\n"
+                    + "AND kompanija.Name LIKE '%"+this.companyName+"%' \n"
+                    + "AND ((kompanija.PIB = moneycontract.PIB AND moneycontract.IdP = package.IdP AND package.PackName LIKE '%"+this.packageName+"%')\n"
+                    + "     OR (kompanija.PIB = donationcontract.PIB AND donationcontract.IdP = package.IdP AND package.PackName LIKE '%"+this.packageName+"%'))";
             SQLQuery query = session.createSQLQuery(sql);
             query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
             List data = query.list();
