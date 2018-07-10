@@ -220,7 +220,8 @@ public class Search {
             tx = session.beginTransaction();
             Criteria cr = session.createCriteria(Lectures.class);
 
-            cr.addOrder(Order.desc("date"));
+            cr.addOrder(Order.asc("date"));
+            cr.addOrder(Order.asc("time"));
 
             Date date = new Date();
             cr.add(Restrictions.gt("date", date));
